@@ -8,4 +8,4 @@ export default class BbcArticle extends LightningElement {
     get hasArticles() {
         return this.articles && this.articles.data && this.articles.data.length > 0;
     }
-} 
+}
