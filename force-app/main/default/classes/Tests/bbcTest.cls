@@ -1,43 +1,31 @@
 @IsTest
-public with sharing class bbcTest {
-    @testSetup
-    static void setup() {
-
-        TestDataFactory.createBBCArticles(10);
-
-        Articles__c setting = new Articles__c();
-        setting.Most_Read__c = 10;
-        setting.Name = 'BBC';
-        setting.News__c = 'BBC';
-        insert setting;
-
-    }
-
-    
+public class bbcTest {
     @IsTest
-    static void testFetchTopArticlesWithPermissions() {
-        
-        User allowedUser = TestDataFactory.createPermittedUser();
+    static void testFetchRawHtmlSuccess() {
+       
+        Test.setMock(HttpCalloutMock.class, new BBCMockHttpResponse());
 
         Test.startTest();
-        System.runAs(allowedUser) {
-            List<BBC_Article__c> articles = bbc.fetchTopArticles();
-            System.assertEquals(10, articles.size(), 'Expected 10 articles to be returned for a user with permissions');
-        }
+        String htmlContent = bbc.fetchRawHtml();
         Test.stopTest();
+
+        System.assertNotEquals(null, htmlContent, 'HTML content should not be null');
+        System.assert(htmlContent.contains('Sample Article Title'), 'Expected HTML content should include the sample article title');
+        System.assert(htmlContent.contains('data-testid="card-order"'), 'Expected HTML content should contain the rank element');
     }
 
     @IsTest
-    static void testFetchTopArticlesEmpty() {
+    static void testFetchRawHtmlErrorHandling() {
         
-        delete [SELECT Id FROM BBC_Article__c];
+        Test.setMock(HttpCalloutMock.class, new BBCMockHttpResponse(500, 'Internal Server Error'));
 
-        
         Test.startTest();
-        
-                List<BBC_Article__c> articles = bbc.fetchTopArticles();
-                System.assertEquals(0, articles.size(), 'Expected 0 articles to be returned when no articles exist');
-
+        try {
+            String htmlContent = bbc.fetchRawHtml();
+            System.assert(false, 'An exception was expected due to an error response');
+        } catch (Exception e) {
+            System.assertEquals('System.AuraHandledException', e.getTypeName(), 'Unexpected exception type received');
+        }
         Test.stopTest();
     }
 }

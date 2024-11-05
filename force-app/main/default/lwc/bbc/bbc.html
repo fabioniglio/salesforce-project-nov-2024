@@ -1,20 +1,22 @@
 <template>
-    <template if:true={hasArticles}>
-        <div class="container"> <!-- Container with white background -->
-            <h2 class="headline">Most Read</h2> <!-- Headline above the list -->
-            <div class="article-list">
-                <template for:each={articles.data} for:item="article">
-                    <div class="article-item" key={article.Id}>
-                        <span class="article-rank">{article.Rank__c}</span>
-                        <a href={article.URL__c} target="_blank" class="article-title">
-                            {article.Title__c}
+    <div class="container">
+        <h2 class="headline">Most Read</h2>
+
+        <template if:true={articles}>
+            <div class="article-grid">
+                <template for:each={articles} for:item="article">
+                    <div class="article-item" key={article.rank}>
+                        <span class="article-rank">{article.rank}</span>
+                        <a href={article.url} target="_blank" class="article-title">
+                            {article.title}
                         </a>
                     </div>
                 </template>
             </div>
-        </div>
-    </template>
-    <template if:false={hasArticles}>
-        <p>No articles available.</p>
-    </template>
+        </template>
+
+        <template if:true={error}>
+            <p>{error}</p>
+        </template>
+    </div>
 </template>
