@@ -38,8 +38,16 @@
 		<name>CustomObject</name>
 	</types>
 	<types>
+		<members>BBC</members>
+		<name>ExternalCredential</name>
+	</types>
+	<types>
 		<members>*</members>
 		<name>LightningComponentBundle</name>
+	</types>
+	<types>
+		<members>*</members>
+		<name>NamedCredential</name>
 	</types>
 	<types>
 		<members>Sales_Manager</members>
