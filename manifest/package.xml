@@ -50,6 +50,7 @@
 		<name>NamedCredential</name>
 	</types>
 	<types>
+		<members>BBC_Endpoint</members>
 		<members>Sales_Manager</members>
 		<name>PermissionSet</name>
 	</types>
