@@ -1,9 +1,9 @@
-import { LightningElement, track } from 'lwc';
+import { LightningElement } from 'lwc';
 import fetchRawHtml from '@salesforce/apex/bbc.fetchRawHtml';
 
 export default class BbcArticleList extends LightningElement {
-    @track articles = [];
-    @track error;
+    articles = [];
+    error;
 
     connectedCallback() {
         this.loadArticles();
