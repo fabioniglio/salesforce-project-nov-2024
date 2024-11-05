@@ -1,11 +1,14 @@
 public with sharing class bbc {
+
     @AuraEnabled(cacheable=true)
     public static String fetchRawHtml() {
         try {
             Http http = new Http();
             HttpRequest request = new HttpRequest();
-            request.setEndpoint('https://www.bbc.com/news');
+            
+            request.setEndpoint('callout:BBC');
             request.setMethod('GET');
+            
             HttpResponse response = http.send(request);
 
             if (response.getStatusCode() == 200) {
